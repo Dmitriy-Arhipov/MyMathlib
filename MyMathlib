@@ -1,0 +1,206 @@
+import math
+def equation(s): #Вводить с пробелами между знаками и числами, переменная - х, формат: 1х**2 + 1х + 7 = 1х**2 + 1х + 7
+    res = 0
+    a = 0
+    b = 0
+    c = 0
+    if s[0]!="-":
+        ur = "+ "+s
+    else: 
+        ur = s
+    ur = ur.split(" ") 
+    if ur[ur.index("=")+1] != "-":
+        ur.insert((ur.index("=")+1), "+")
+    for i in range(ur.index("=")):
+                if ur[i] == "+":
+                    if "x**2" in ur[i+1]:
+                        a+=int(ur[i+1][:(ur[i+1].index("x"))])
+                    elif "x" in ur[i+1]:
+                        b+=int(ur[i+1][:(ur[i+1].index("x"))])
+                    else:
+                        c+=int(ur[i+1])
+                elif ur[i] == "-":
+                    if "x**2" in ur[i+1]:
+                        a-=int(ur[i+1][:(ur[i+1].index("x"))])
+                    elif "x" in ur[i+1]:
+                        b-=int(ur[i+1][:(ur[i+1].index("x"))])
+                    else:
+                        c-=int(ur[i+1])
+    for i in range(ur.index("="), (len(ur) - 1)):
+        if ur[i] == "-":
+                    if "x**2" in ur[i+1]:
+                        a+=int(ur[i+1][:(ur[i+1].index("x"))])
+                    elif "x" in ur[i+1]:
+                        b+=int(ur[i+1][:(ur[i+1].index("x"))])
+                    else:
+                        c+=int(ur[i+1])
+        elif ur[i] == "+":
+                        if "x**2" in ur[i+1]:
+                                a-=int(ur[i+1][:(ur[i+1].index("x"))])
+                        elif "x" in ur[i+1]:
+                                b-=int(ur[i+1][:(ur[i+1].index("x"))])
+                        else:
+                                c-=int(ur[i+1])
+
+    if a == 0:
+        res = str((-c)/b)
+    else:
+        def intsqrt(n):
+            m = 1
+            res = 0
+            boolregul = False
+            while m*m<(n+1):
+                if m*m == n:
+                    boolregul = True
+                    res = m
+                m+=1
+            if boolregul == False:
+                res = "√"+str(n)
+            return res
+        res=""
+        d = b*b - 4*a*c
+        if d<0:
+            res = "Нет корней (Дискриминант D<0)"
+        if d==0:
+            r = -b/(2*a)
+            res = "Единственный корень "+str(r)
+        if d>0:
+            if type(intsqrt(d)) is str:
+                res = "Два корня (" + str(-b) + "±" + str(intsqrt(d)) + ") /" + str(2 * a)
+            if type(intsqrt(d)) is int:
+                r1 = (-b + intsqrt(d)) / (2 * a)
+                r2 = (-b - intsqrt(d)) / (2 * a)
+                res = "Два корня " + str(r1) + " и " + str(r2)
+    return res
+def eratosphen(n):
+    blst = [False] * 2 + [True] * (n - 1)
+    for i in range(2, n+1):
+        if blst[i] == True:
+            for k in range(i*i,(n+1),i):
+                if k % i == 0:
+                    blst[k] = False
+    res = [x for x in range(n) if blst[x] == True]
+    return res
+def divisors(n):
+        res = []
+        i = 1
+        while i * i < (n + 1):
+            if n%i==0:
+                res.append(i)
+                res.append(n//i)
+            i+=1
+        res.sort()
+        S = ""
+        for i in res:
+            S = S+str(i)+", "
+        return S
+def factorization(n):
+        res = []
+        i = 2
+        while i * i < (n+1):
+            if n % i == 0:
+                n = n//i
+                res.append(i)
+            else:
+                i += 1
+        if n > 1:
+            res.append(n)
+        L=[]
+        S = ""
+        for i in res:
+            if i not in L:
+                L.append(i)
+                S = S+str(i)+" в степени "+ str(res.count(i))+", "
+        return S
+def NOD(a,b):
+        while a != 0 and b != 0:
+            if a >= b:
+                a = a % b
+            else:
+                b = b % a
+        return max(a, b)
+def NOK(a,b):
+    return (a*b)//NOD(a,b)
+def fibonacci(n):
+        i1 = 0
+        i2 = 1
+        lst = []
+        while i1 < n and i2 < n:
+            lst.append(i1)
+            lst.append(i2)
+            i1 = i1+i2
+            i2 = i1+i2
+        return lst
+def C(k,n):
+        return math.factorial(n)/(math.factorial(k)*math.factorial(n-k))
+def summa(k,n):
+        return (n+k)*(n-k+1)/2
+def int_from_dec_to_q2(num, q2):
+    Listchisel = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    n = abs(num)
+    res = Listchisel[n % q2]
+    while n >= q2:
+        n = n // q2
+        res += Listchisel[n % q2]
+    return ('' if num >= 0 else '-') + res[::-1]
+def float_from_dec_to_q2(frac, q2):
+    alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    res = ""
+    for i in range(10, 1, -1):
+        frac *= q2
+        frac = round(frac, i)
+        res += str(int(frac))
+        frac -= int(frac)
+    return res
+def from_q1_to_q2(strnumber, q1, q2):
+    Listchisel = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    if "." in strnumber:
+        num, frac = map(str, strnumber.split('.'))
+        if num == "":
+            res = ""
+            return res
+        num = int(num, q1)
+        a = int_from_dec_to_q2(num, q2)
+        b = 0
+        k = q1
+        for i in frac:
+            b += Listchisel.index(i) / k
+            k *= q1
+        b = float_from_dec_to_q2(b, q2)
+        res = a + "." + b
+    else:
+        res = int_from_dec_to_q2(int(strnumber, q1), q2)
+    return res
+def calc_in_OS(St, q1, q2):
+        operlist = ["+", "-", "*", "/", "**", "(", ")", "//", "%", "", " "]
+        new = []
+        lst = []
+        for i in St:
+            if i in operlist:
+                lst.append(" " + i + " ")
+            else:
+                lst.append(i)
+        S = "".join(lst)
+        lst2 = S.split(" ")
+        for i in lst2:
+            if i in operlist:
+                new.append(i)
+            else:
+                new.append(from_q1_to_q2(i, q1, 10))
+        S = "".join(new)
+        res = from_q1_to_q2(str(eval(S)), 10, q2)
+        return res
+def doc():
+    print("Документация к библиотеке MyMathlib")
+    print("equation(str) - возвращает корни квадратного (или линейного) уравнения, записанного строкой. Между знаками и слагаемыми обязательны пробелы - используются как разделитель. Искомая переменная записывается как х, перед ней должен стоять коэффициент (даже если это 1)")
+    print("eratosphen(n) - возвращает решето Эратосфена (все простые числа до n)")
+    print("divisors(n) - возвращает все делители числа n")
+    print("factorization(n) - возвращает разложение n на простые множители")
+    print("NOD(a,b) - возвращает наибольший общий делитель чисел a и b")
+    print("NOK(a,b) - возвращает наименьшее общее кратное чисел a и b")
+    print("fibonacci(n) - возвращает все числа Фибоначчи до n")
+    print("C(k,n) - возвращает биномиальный коэффициент (число сочетаний) из n по k. Показывает, сколькими способами можно выбрать k-элементное подмножество n-элементного множества. k - меньшее.")
+    print("summa(k,n) - сумма всех чисел от k до n. k - меньшее.")
+    print("from_q1_to_q2(strnumber, q1,q2) - принимает число, записанное строкой, его исходную систему счисления (q1), ту систему, в которую надо перевести (q2), возвращает число (строкой) в системе q2.")
+    print("calc_in_OS(str, q1, q2) - возвращает результат вычисления выражения в системе счисления q1, записанного строкой, переведенный в систему q2.)")
+
